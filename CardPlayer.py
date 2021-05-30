@@ -63,6 +63,7 @@ class CardPlayer:
         self.policy = policy
         self.print_moves = print_moves
         self.lang = "en-US"
+        self.watch_only = False
         self.memory = Memory()
 
         self.player_state = PlayerState.NOT_CONNECTED
@@ -87,13 +88,16 @@ class CardPlayer:
         self.game_cancelled = False
         self.last_json_state = ""
 
-        server_url = "http://localhost:25000/Cards56Hub"
-        self._hub_connection: HubConnectionBuilder = HubConnectionBuilder().with_url(server_url).with_automatic_reconnect({
-            "type": "raw",
-            "keep_alive_interval": 10,
-            "reconnect_interval": 5,
-            "max_attempts": 5
-        }).build()
+        server_url = "https://localhost:5001/Cards56Hub"
+        self._hub_connection: HubConnectionBuilder = HubConnectionBuilder()\
+            .with_url(server_url, options={"verify_ssl": False})\
+            .with_automatic_reconnect({
+                    "type": "raw",
+                    "keep_alive_interval": 10,
+                    "reconnect_interval": 5,
+                    "max_attempts": 5
+                })\
+            .build()
 
         # Register websockets events
         self._hub_connection.on_open(self._on_connected)
@@ -105,9 +109,11 @@ class CardPlayer:
 
         self.connected_event.clear()
         self._hub_connection.start()
-        self.connected_event.wait(10)
-        self._register_player()
-        self._join_table(0, "")
+        if self.connected_event.wait(10):
+            self._register_player()
+            self._join_table(0, "")
+        else:
+            print(f"Player {self.name} could not connect.")
 
     def __enter__(self):
         return self
@@ -136,8 +142,9 @@ class CardPlayer:
     def _register_player(self):
         if self.player_state == PlayerState.CONNECTED:
             self.registered_event.clear()
-            self._hub_connection.send("RegisterPlayer", [self.name, self.lang])
-            self.registered_event.wait(10)
+            self._hub_connection.send("RegisterPlayer", [self.name, self.lang, self.watch_only])
+            if not self.registered_event.wait(10):
+                print(f"Could not register player {self.name}")
         else:
             print(f"Cannot register {self.name}. Current state is {self.player_state}")
 
@@ -150,8 +157,8 @@ class CardPlayer:
         if self.player_state == PlayerState.REGISTERED:
             self.joined_table.clear()
             self._hub_connection.send("JoinTable", [table_type, table_name])
-            self.joined_table.wait(10)
-            # print(f"Player {self.name} joined table {table_name}")
+            if not self.joined_table.wait(10):
+                print(f"Player {self.name} could not join table")
         else:
             print(f"Player {self.name} cannot join table. Current state is {self.player_state}")
 
@@ -313,7 +320,7 @@ class CardPlayer:
             self.take_action_complete.wait()
         elif action == GameAction.SHOW_TRUMP:
             self._print_moves(f"Player {self.name} ShowTrump")
-            self._hub_connection.send("ShowTrump", [])
+            self._hub_connection.send("ShowTrump", [0])
             self.take_action_complete.wait()
         else:
             print(f"Unexpected action in _take_action? {action}")
