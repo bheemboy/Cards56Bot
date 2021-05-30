@@ -20,7 +20,7 @@ conda create --name Cards56Bot --file requirements.txt
 Install PyTorch
 ```
 conda activate Cards56Bot
-conda install pytorch-1.8.1 torchvision-0.9.1 torchaudio-0.8.1 cpuonly-1.0 -c pytorch-lts
+conda install pytorch-1.8.1 torchvision-0.9.1 torchaudio-0.8.1 cpuonly-1.0 -c pytorch
 ```
 
 Use PIP to install OpenAI GYM
