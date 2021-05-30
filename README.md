@@ -6,7 +6,7 @@ This is a deep reiforcement learning project that uses PPO to train an AI bot to
 
 Clone this project
 ```
-git clone gh repo clone bheemboy/Cards56Bot'
+git clone gh repo clone bheemboy/Cards56Bot
 ```
 
 Install miniconda
