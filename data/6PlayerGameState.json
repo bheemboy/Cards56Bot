@@ -1,0 +1,196 @@
+{
+  "PlayerPosition": 4,
+  "TableFull": true,
+  "GameStage": 4,
+  "PlayerCards": [
+    "c11",
+    "c9",
+    "c1",
+    "s11",
+    "s9",
+    "s1",
+    "s10"
+  ],
+  "TrumpExposed": true,
+  "CurrentRoundSuit": " ",
+  "TrumpCard": "c13",
+  "TableInfo": {
+    "Chairs": [
+      {
+        "Occupant": {
+          "Name": "Chakko",
+          "Lang": "ml-IN"
+        },
+        "Position": 0
+      },
+      {
+        "Occupant": {
+          "Name": "Abdul",
+          "Lang": "en-US"
+        },
+        "Position": 1
+      },
+      {
+        "Occupant": {
+          "Name": "Bunny",
+          "Lang": "ml-IN"
+        },
+        "Position": 2
+      },
+      {
+        "Occupant": {
+          "Name": "Naina",
+          "Lang": "en-US"
+        },
+        "Position": 3
+      },
+      {
+        "Occupant": {
+          "Name": "Pottan",
+          "Lang": "en-US"
+        },
+        "Position": 4
+      },
+      {
+        "Occupant": {
+          "Name": "Kannan",
+          "Lang": "en-US"
+        },
+        "Position": 5
+      }
+    ],
+    "Type": 1,
+    "MaxPlayers": 6,
+    "TableName": "PUBLIC_TABLE_011b271f9c6245f784c605a262c1b4d2",
+    "GameCancelled": false,
+    "Bid": {
+      "HighBid": 41,
+      "HighBidder": 1,
+      "NextBidder": 1,
+      "NextMinBid": 48,
+      "BidHistory": [
+        {
+          "Position": 1,
+          "Bid": 28
+        },
+        {
+          "Position": 2,
+          "Bid": 29
+        },
+        {
+          "Position": 3,
+          "Bid": 30
+        },
+        {
+          "Position": 4,
+          "Bid": 31
+        },
+        {
+          "Position": 5,
+          "Bid": 32
+        },
+        {
+          "Position": 0,
+          "Bid": 33
+        },
+        {
+          "Position": 1,
+          "Bid": 0
+        },
+        {
+          "Position": 3,
+          "Bid": 0
+        },
+        {
+          "Position": 5,
+          "Bid": 0
+        },
+        {
+          "Position": 2,
+          "Bid": 40
+        },
+        {
+          "Position": 1,
+          "Bid": 41
+        },
+        {
+          "Position": 4,
+          "Bid": 0
+        },
+        {
+          "Position": 0,
+          "Bid": 0
+        },
+        {
+          "Position": 2,
+          "Bid": 0
+        },
+        {
+          "Position": 3,
+          "Bid": 0
+        },
+        {
+          "Position": 5,
+          "Bid": 0
+        },
+        {
+          "Position": 1,
+          "Bid": 0
+        }
+      ]
+    },
+    "Rounds": [
+      {
+        "TrumpExposed": [
+          false,
+          false,
+          true,
+          true,
+          true,
+          true
+        ],
+        "FirstPlayer": 1,
+        "NextPlayer": -1,
+        "PlayedCards": [
+          "d11",
+          "d13",
+          "c12",
+          "h13",
+          "h11",
+          "d13"
+        ],
+        "Winner": 3,
+        "Score": 6
+      },
+      {
+        "TrumpExposed": [],
+        "FirstPlayer": 3,
+        "NextPlayer": 3,
+        "PlayedCards": [],
+        "Winner": -1,
+        "Score": -1
+      }
+    ],
+    "DealerPos": 1,
+    "RoundWinner": 3,
+    "RoundOver": true,
+    "WinningTeam": -1,
+    "WinningScore": 0,
+    "TeamScore": [
+      0,
+      6
+    ],
+    "CoolieCount": [
+      5,
+      5
+    ],
+    "KodiCount": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}
