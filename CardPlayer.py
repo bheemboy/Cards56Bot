@@ -9,6 +9,9 @@ from torch.distributions import Categorical
 import torch
 
 
+SERVER_URL = "https://localhost/Cards56Hub"
+
+
 class PlayerState(IntEnum):
     NOT_CONNECTED = 0
     CONNECTED = 1
@@ -88,9 +91,8 @@ class CardPlayer:
         self.game_cancelled = False
         self.last_json_state = ""
 
-        server_url = "https://localhost:5001/Cards56Hub"
         self._hub_connection: HubConnectionBuilder = HubConnectionBuilder()\
-            .with_url(server_url, options={"verify_ssl": False})\
+            .with_url(SERVER_URL, options={"verify_ssl": False})\
             .with_automatic_reconnect({
                     "type": "raw",
                     "keep_alive_interval": 10,
