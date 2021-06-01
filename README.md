@@ -33,3 +33,7 @@ Install SignalRCore
 ```
 pip install signalrcore==0.9.2
 ```
+
+NOTE: The project uses SERVER_URL in CardPlayer.py as the address of the game server. 
+The default value assumes that you are running a copy of https://github.com/bheemboy/Cards56 
+on localhost. If your environment is different you need to update its value. 
