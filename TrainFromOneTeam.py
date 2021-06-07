@@ -12,18 +12,18 @@ def train_model():
     k_epochs = 4                # update policy for K epochs
     eps_clip = 0.2              # clip parameter for PPO
     #############################################
-
+    table_type = 0
     train_ppo = 1
     n_players = 4
-    layer_dims = [[STATE_DIM4, 64, 64, ACTION_DIM],
-                  [STATE_DIM4, 128, ACTION_DIM]]
+    layer_dims = [[STATE_DIM[table_type], 64, 64, ACTION_DIM],
+                  [STATE_DIM[table_type], 128, ACTION_DIM]]
 
     memory = Memory()
     policy_files = [f'Card56Bot-{dim}-{i}.pth' for i, dim in enumerate(layer_dims)]
     temp_files = [f'Temp-{dim}-{i}.pth' for i, dim in enumerate(layer_dims)]
     ppos = [PPO(dim, lr, betas, gamma, k_epochs, eps_clip) for dim in layer_dims]
 
-    players_temp = [CardPlayer(id=i, policy=ppos[i % 2].policy_old) for i in range(n_players)]
+    players_temp = [CardPlayer(id=i, table_type=table_type, policy=ppos[i % 2].policy_old) for i in range(n_players)]
     # rearrange players based on their table position
     players = [None, None, None, None]
     for p in players_temp:

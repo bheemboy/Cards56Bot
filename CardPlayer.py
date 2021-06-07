@@ -50,8 +50,7 @@ class ServerMethod(IntEnum):
     STARTNEXTGAME = 8
 
 
-STATE_DIM4 = 250
-STATE_DIM6 = 368
+STATE_DIM = [250, 368]
 ACTION_DIM = int(GameAction.MAX_ACTIONS)  # 48
 REWARD_FOR_MISTAKE = 0
 WINNING_SCORE_MULTIPLIER = 1
@@ -61,8 +60,9 @@ NEGATIVE_REWARDS_FOR_LOSING = False
 
 
 class CardPlayer:
-    def __init__(self, id, policy, print_moves=False):
+    def __init__(self, id, table_type, policy, print_moves=False):
         self.id = id
+        self.table_type = table_type
         self.name = f"BOT-{self.id}"
         self.policy = policy
         self.print_moves = print_moves
@@ -114,7 +114,7 @@ class CardPlayer:
         self._hub_connection.start()
         if self.connected_event.wait(10):
             self._register_player()
-            self._join_table(0, "")
+            self._join_table(table_type, "")
         else:
             print(f"Player {self.name} could not connect.")
 

@@ -10,8 +10,8 @@ def play_game():
     k_epochs = 4                # update policy for K epochs
     eps_clip = 0.2              # clip parameter for PPO
     #############################################
-
-    layer_dims = [STATE_DIM4, 64, 64, ACTION_DIM]
+    table_type = 0
+    layer_dims = [STATE_DIM[table_type], 64, 64, ACTION_DIM]
     ppo = PPO(layer_dims, lr, betas, gamma, k_epochs, eps_clip)
 
     temp_file = f'Card56Bot-{layer_dims}.pth'
@@ -20,7 +20,7 @@ def play_game():
     n_players = 2
     number_of_games = 1
 
-    players = [CardPlayer(id=i, policy=ppo.policy_old, print_moves=True) for i in range(n_players)]
+    players = [CardPlayer(id=i, table_type=table_type, policy=ppo.policy_old, print_moves=True) for i in range(n_players)]
     for game_num in range(number_of_games):
         play_one_game(game_num=game_num, players=players)
 
