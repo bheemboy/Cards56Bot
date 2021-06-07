@@ -9,7 +9,7 @@ from torch.distributions import Categorical
 import torch
 
 
-SERVER_URL = "https://localhost/Cards56Hub"
+SERVER_URL = "https://localhost:5001/Cards56Hub"
 
 
 class PlayerState(IntEnum):
@@ -54,9 +54,10 @@ STATE_DIM4 = 250
 STATE_DIM6 = 368
 ACTION_DIM = int(GameAction.MAX_ACTIONS)  # 48
 REWARD_FOR_MISTAKE = 0
-WINNING_SCORE_MULTIPLIER = 100
-INCLUDE_LAST_ROUND_REWARD = True
-INCLUDE_BAD_MOVES = True
+WINNING_SCORE_MULTIPLIER = 1
+INCLUDE_LAST_ROUND_REWARD = False
+INCLUDE_BAD_MOVES = False
+NEGATIVE_REWARDS_FOR_LOSING = False
 
 
 class CardPlayer:
@@ -343,7 +344,9 @@ class CardPlayer:
             if GameAction.TRUMP_CARD_1 <= action <= GameAction.TRUMP_CARD_8:
                 return True
         elif game_stage == GameStage.PLAY_CARD:
-            if GameAction.PLAY_CARD_1 <= action <= GameAction.PLAY_CARD_8 or action == GameAction.SHOW_TRUMP:
+            if action == GameAction.SHOW_TRUMP:
+                return True
+            elif GameAction.PLAY_CARD_1 <= action <= GameAction.PLAY_CARD_8:
                 total_cards_count = len(state['PlayerCards'])
                 selected_card_num = action - GameAction.PLAY_CARD_1
                 if selected_card_num < total_cards_count:
@@ -373,7 +376,7 @@ class CardPlayer:
             winning_score = state['TableInfo']['WinningScore'] * WINNING_SCORE_MULTIPLIER
             if (self.player_position % 2) == self.winning_team:
                 self.memory.rewards[self.memory.count() - 1] += winning_score
-            else:
+            elif NEGATIVE_REWARDS_FOR_LOSING:
                 self.memory.rewards[self.memory.count() - 1] += -winning_score
             self.memory.is_terminals[self.memory.count()-1] = True
 
