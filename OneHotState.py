@@ -81,15 +81,21 @@ class OneHot:
         return one_hot_cards
 
     def get_current_round(self, played_cards):
-        # one card is represented as 4 bit suit [len(self.SUITS)] + 4 (or 6) bit rank [len(self.RANKS)]
         # there are a maximum of 3 (or 5) cards [self.MAX_PLAYERS-1]
-        one_hot_current_round = np.zeros((len(self.SUITS)+len(self.RANKS)) * (self.MAX_PLAYERS-1))
+        max_cards_on_table = self.MAX_PLAYERS - 1
+
+        # one card is represented as 4 bit suit [len(self.SUITS)] + 1 spot for rank
+        one_hot_card_size = len(self.SUITS) + 1
+
+        one_hot_current_round = np.zeros(one_hot_card_size * max_cards_on_table)
         for i, card in enumerate(played_cards):
-            suit, rank = self.get_card_suit_and_rank(card)
             # The previous payer always gets the last spot regardless of how many plays have happened
-            card_offset = ((self.MAX_PLAYERS-1)-(len(played_cards))+i) * (len(self.SUITS)+len(self.RANKS))
+            card_offset = max_cards_on_table - len(played_cards) + i
+            card_offset = card_offset * one_hot_card_size
+
+            suit, rank = self.get_card_suit_and_rank(card)
             one_hot_current_round[card_offset+suit] = 1
-            one_hot_current_round[card_offset+len(self.SUITS)+rank] = 1
+            one_hot_current_round[card_offset+len(self.SUITS)] = rank+1
         return one_hot_current_round
 
     def get_cards_played(self, rounds):
