@@ -26,6 +26,13 @@ class OneHot:
         one_hot_game_stage = [1 if game_stage == stage else 0 for stage in self.GAME_STAGES]
         self.one_hot = np.concatenate((self.one_hot, one_hot_game_stage))
 
+        # dealer position
+        self.dealer_position_idx = 0
+        dealer_position = state['TableInfo']['DealerPos']
+        dealer_position = (dealer_position - self.player_position) % self.MAX_PLAYERS
+        one_hot_dealer_position = [1 if i == dealer_position else 0 for i in range(self.MAX_PLAYERS)]
+        self.one_hot = np.concatenate((self.one_hot, one_hot_dealer_position))
+
         # Highbidder my team?
         self.my_team_bid_idx = len(self.one_hot)
         high_bidder_posn = state['TableInfo']['Bid']['HighBidder']

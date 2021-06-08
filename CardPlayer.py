@@ -50,7 +50,7 @@ class ServerMethod(IntEnum):
     STARTNEXTGAME = 8
 
 
-STATE_DIM = [88, 130]
+STATE_DIM = [92, 136]
 ACTION_DIM = int(GameAction.MAX_ACTIONS)  # 48
 
 REWARD_FOR_MISTAKE = 0
