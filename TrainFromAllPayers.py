@@ -17,14 +17,14 @@ def main():
     table_type = 0
 
     memory = Memory()
-    layer_dims = [STATE_DIM[table_type], 128, 64, ACTION_DIM]
+    layer_dims = [STATE_DIM[table_type], 64, 64, ACTION_DIM]
     ppo = PPO(layer_dims, lr, betas, gamma, k_epochs, eps_clip)
 
     file_name = 'Card56Bot.pth'
     temp_file = f'Temp-{layer_dims}.pth'
     ppo.load_policy_from_file(temp_file)
 
-    n_players = 4
+    n_players = 4 + 2*table_type
     n_total_games = 100000
     n_update_every = 100
     best_ave_bidder_wins = 0.5

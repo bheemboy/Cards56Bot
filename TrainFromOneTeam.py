@@ -14,7 +14,7 @@ def train_model():
     #############################################
     table_type = 0
     train_ppo = 1
-    n_players = 4
+    n_players = 4 + 2*table_type
     layer_dims = [[STATE_DIM[table_type], 64, 64, ACTION_DIM],
                   [STATE_DIM[table_type], 128, ACTION_DIM]]
 
