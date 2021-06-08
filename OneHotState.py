@@ -26,6 +26,18 @@ class OneHot:
         one_hot_game_stage = [1 if game_stage == stage else 0 for stage in self.GAME_STAGES]
         self.one_hot = np.concatenate((self.one_hot, one_hot_game_stage))
 
+        # Highbidder my team?
+        self.my_team_bid_idx = len(self.one_hot)
+        high_bidder_posn = state['TableInfo']['Bid']['HighBidder']
+        relative_high_bidder = (high_bidder_posn - self.player_position) % self.MAX_PLAYERS
+        one_hot_my_team_bid = [1 if (relative_high_bidder % 2) == 0 else 0]
+        self.one_hot = np.concatenate((self.one_hot, one_hot_my_team_bid))
+
+        # next_min_bid
+        self.next_min_bid_idx = len(self.one_hot)
+        next_min_bid = state['TableInfo']['Bid']['NextMinBid']
+        self.one_hot = np.concatenate((self.one_hot, [next_min_bid]))
+
         # trump card
         self.trump_card_idx = len(self.one_hot)
         trump_card = state['TrumpCard']
@@ -83,17 +95,15 @@ class OneHot:
     def get_current_round(self, played_cards):
         # there are a maximum of 3 (or 5) cards [self.MAX_PLAYERS-1]
         max_cards_on_table = self.MAX_PLAYERS - 1
-
         # one card is represented as 4 bit suit [len(self.SUITS)] + 1 spot for rank
         one_hot_card_size = len(self.SUITS) + 1
 
         one_hot_current_round = np.zeros(one_hot_card_size * max_cards_on_table)
-        for i, card in enumerate(played_cards):
-            # The previous payer always gets the last spot regardless of how many plays have happened
-            card_offset = max_cards_on_table - len(played_cards) + i
-            card_offset = card_offset * one_hot_card_size
 
+        # Looping in reverse so that the plays from the adjacent player/s show up always in the same spot
+        for i, card in enumerate(reversed(played_cards)):
             suit, rank = self.get_card_suit_and_rank(card)
+            card_offset = i * one_hot_card_size
             one_hot_current_round[card_offset+suit] = 1
             one_hot_current_round[card_offset+len(self.SUITS)] = rank+1
         return one_hot_current_round
