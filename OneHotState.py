@@ -44,7 +44,7 @@ class OneHot:
         played_cards = []
         if len(rounds) > 0:
             played_cards = rounds[-1]["PlayedCards"]    # Get last round
-        one_hot_current_round = self.get_one_hot_cards(played_cards)
+        one_hot_current_round = self.get_current_round(played_cards)
         self.one_hot = np.concatenate((self.one_hot, one_hot_current_round))
 
         # cards played so far
@@ -79,6 +79,17 @@ class OneHot:
         for card in cards:
             one_hot_cards = self.set_card_in_deck(one_hot_cards, card)
         return one_hot_cards
+
+    def get_current_round(self, played_cards):
+        # one card is represented as 4 bit suit [len(self.SUITS)] + 4 (or 6) bit rank [len(self.RANKS)]
+        # there are a maximum of 3 (or 5) cards [self.MAX_PLAYERS-1]
+        one_hot_current_round = np.zeros((len(self.SUITS)+len(self.RANKS)) * (self.MAX_PLAYERS-1))
+        for i, card in enumerate(played_cards):
+            suit, rank = self.get_card_suit_and_rank(card)
+            card_offset = i * (len(self.SUITS)+len(self.RANKS))
+            one_hot_current_round[card_offset+suit] = 1
+            one_hot_current_round[card_offset+len(self.SUITS)+rank] = 1
+        return one_hot_current_round
 
     def get_cards_played(self, rounds):
         one_hot_get_cards_played = np.zeros(self.DECK_SIZE)
