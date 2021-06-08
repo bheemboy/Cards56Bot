@@ -86,7 +86,8 @@ class OneHot:
         one_hot_current_round = np.zeros((len(self.SUITS)+len(self.RANKS)) * (self.MAX_PLAYERS-1))
         for i, card in enumerate(played_cards):
             suit, rank = self.get_card_suit_and_rank(card)
-            card_offset = i * (len(self.SUITS)+len(self.RANKS))
+            # The previous payer always gets the last spot regardless of how many plays have happened
+            card_offset = ((self.MAX_PLAYERS-1)-(len(played_cards))+i) * (len(self.SUITS)+len(self.RANKS))
             one_hot_current_round[card_offset+suit] = 1
             one_hot_current_round[card_offset+len(self.SUITS)+rank] = 1
         return one_hot_current_round
